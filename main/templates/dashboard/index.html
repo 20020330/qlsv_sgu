@@ -1,0 +1,40 @@
+{% extends 'adminView/admin.html' %}
+
+{% block content %}
+<div class="dashboard">
+   <h2>Chào mừng bạn đến với bảng điều khiển của bạn, AI CLUB</h2>
+   <div class="block-content mt-5">
+        <ul class="nav flex-column custom-options">
+            <li class="nav-item custom-nav-item">
+                <div class="wrap-icon"><i class="bi bi-person-fill"></i></div>
+                <div class="wrap-text">
+                    <a href="{% url 'member' %}">
+                        <h3 class="nav-link">Thành viên</h3>
+                        <p class="discription">Dùng để quản lý thành viên trong lab, thêm thành viên lab.</p>
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item custom-nav-item">
+                <div class="wrap-icon"><i class="bi bi-calendar-event-fill"></i></div>
+                <div class="wrap-text">
+                    <a href="{% url 'event' %}">
+                        <h3 class="nav-link" >Sự kiện</h3>
+                        <p class="discription">Dùng để quản lý sự kiện, thêm sự kiện</p>
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item custom-nav-item">
+                <div class="wrap-icon"><i class="bi bi-envelope-paper-fill"></i></div>
+                <div class="wrap-text">
+                    <a href="{% url 'paper' %}">
+                        <h3 class="nav-link" >Paper</h3>
+                        <p class="discription">Quản lý các paper hiện có, và thêm paper</p>
+                    </a>
+                </div>
+            </li>
+        </ul>
+   </div>
+</div>
+
+
+{% endblock %}

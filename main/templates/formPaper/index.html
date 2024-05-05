@@ -1,0 +1,26 @@
+{% extends 'adminView/admin.html' %}
+{% load static %}
+
+{% block content %}
+<link href="{% static 'css/adminSite/adminSite.css' %}" rel="stylesheet">
+<link href="{% static 'css/form/main.css' %}" rel="stylesheet">
+<div class="form">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3 group-form">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="background-color: #152259;">Submit</button>
+      </form>
+</div>
+
+{% endblock %}

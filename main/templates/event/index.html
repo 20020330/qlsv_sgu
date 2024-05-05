@@ -1,0 +1,110 @@
+{% extends 'adminView/admin.html' %}
+{% load static %}
+
+{% block content %}
+<link href="{% static 'css/adminSite/adminSite.css' %}" rel="stylesheet">
+<div>
+   <div class="navbar custom-nav">
+        <div class="btn btn-primary custom-btn-icon" style="margin-right: 20px;">
+            <div class="text"> 
+                <a href="{% url 'addEvent' %}">Add</a>
+            </div>
+            <div class="icon">
+                <i class="bi bi-plus"></i>
+            </div>
+        </div>
+        <div class="search">
+            <form action="{% url 'searchEvent' %}">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="search" class="form-control custom-input" id="exampleInputPassword1" placeholder="Search for a student by title">
+                </div>
+            </form>
+            <button class="btn btn-primary custom-btn-icon">
+                <div class="text"> 
+                    Search
+                </div>
+                <div class="icon">
+                    <i class="bi bi-search"></i>
+                </div>
+            </button>
+        </div>
+   </div>
+   <div class="table-item">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 5%;">#</th>
+                        <th scope="col" style="width: 20%;">Name</th>
+                        <!-- <th scope="col" style="width: 45%;">Content</th> -->
+                        <th scope="col" style="width: 10%;">Time</th>
+                        <th scope="col" style="width: 10%;">Link</th>
+                        <th scope="col" style="width: 1%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events  %}
+                    <tr>
+                        <th scope="row">{{event.id_event}} </th>
+                        <td>{{event.name_event}} </td>
+                        <td>{{event.time}}</td>
+                        <td class="name-avatar">
+                            <div class="avatar">
+                                <a href="{{ event.form_register }}" target="_blank">Link Form</a>
+                            </div>
+                        </td>
+                        <td class="wrap-btn-crud a{{ event.id_event }}"> 
+                        </td>
+                        <script>
+                            var id_user = "{{ event.id_user }}";
+                            var check_mssv = "{{ check_mssv }}";
+                            var super_user = "{{ is_superuser }}"
+                            handleClickDelete{{event.id_event}} = () => {
+                                var modal = document.querySelector(".m{{event.id_event}}");
+                                modal.style.display = "block";
+                            }
+                            handleCLickClose{{event.id_event}} = () => {
+                                var modal = document.querySelector(".m{{event.id_event}}");
+                                modal.style.display = "none";
+                            }
+                            if ((id_user == check_mssv || super_user == "True") ) {
+                                const wrap_btn = document.querySelector(".a{{ event.id_event }}")
+                                wrap_btn.innerHTML = `<div class="btn btn-primary custom-btn-edit custom-btn-icon">
+                                <div class="text"> 
+                                    <a href="{% url 'editEvent' event.id_event %}"><i class="bi bi-pencil-square"></i></a>
+                                </div>
+                            </div>
+                            <div class="btn btn-primary custom-btn-delete custom-btn-icon">
+                                <div class="text"> 
+                                    <a onCLick="handleClickDelete{{event.id_event}}()"><i class="bi bi-trash"></i></a>
+                                </div>
+                            </div> 
+                            <div class="modal m{{event.id_event}}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Are you sure ??</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>If you delete you can't restore</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="handleCLickClose{{event.id_event}}()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary"><a style="color: white; text-decoration: none;" href="{% url 'deleteEvent' event.id_event %}">Sure</a></button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>` 
+                            }
+                        </script>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   </div>
+</div>
+
+
+{% endblock %}

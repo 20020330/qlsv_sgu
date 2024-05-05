@@ -1,0 +1,21 @@
+.form {
+    width: 100%;
+    max-width: 85%;
+    padding: 15px;
+    margin: auto;
+}
+
+.group-form {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.group-form label {
+    display: flex;
+    justify-content: flex-start;
+    min-width: 150px !important;
+    /* margin-right: 1rem; */
+}
+.group-form input {
+    width: calc(100% - 150px);
+}

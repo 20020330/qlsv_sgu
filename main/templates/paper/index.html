@@ -1,0 +1,121 @@
+{% extends 'adminView/admin.html' %}
+{% load static %}
+
+{% block content %}
+<link href="{% static 'css/adminSite/adminSite.css' %}" rel="stylesheet">
+<div>
+   <div class="navbar custom-nav">
+        <div class="btn btn-primary custom-btn-icon" style="margin-right: 20px;">
+            <div class="text"> 
+                <a href="{% url 'addPaper' %}">Add</a>
+            </div>
+            <div class="icon">
+                <i class="bi bi-plus"></i>
+            </div>
+        </div>
+        <div class="search">
+            <form action="{% url 'searchPaper' %}">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="search" class="form-control custom-input" id="exampleInputPassword1" placeholder="Search for a student by title">
+                </div>
+            </form>
+            <button class="btn btn-primary custom-btn-icon">
+                <div class="text"> 
+                    Search
+                </div>
+                <div class="icon">
+                    <i class="bi bi-search"></i>
+                </div>
+            </button>
+        </div>
+   </div>
+   <div class="table-item">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 5%;">#</th>
+                        <th scope="col" style="width: 40%;">Title</th>
+                        <th scope="col" style="width: 30%;">Author</th>
+                        <th scope="col" style="width: 10%;">Institute</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Link_Paper</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paper in papers  %}
+                    <tr>
+                        <th scope="row">{{paper.id_paper}} </th>
+                        <td>{{paper.title}} </td>
+                        <td>{{paper.author}}</td>
+                        <td>{{paper.institute}}</td>
+                        <td>{{paper.year}}</td>   
+                        <td class="name-avatar">
+                            {% if paper.link_github != "None" %}
+                            <div class="avatar">
+                                <a href="{{ paper.link_github }}" target="_blank">Link github</a>
+                            </div>
+                            {% endif %}
+                            {% if paper.link_paper != "nan" %}
+                            <div class="name">
+                                <a href="{{ paper.link_paper }}" target="_blank"> Link paper</a>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="wrap-btn-crud a{{paper.id_paper}}"> 
+                        </td>
+                        <script>
+                            var id_user = "{{paper.id_user}}";
+                            var check_mssv = "{{ check_mssv }}";
+                            var super_user = "{{is_superuser}}"
+                            handleClickDelete{{paper.id_paper}} = () => {
+                                var modal = document.querySelector(".m{{paper.id_paper}}");
+                                modal.style.display = "block";
+                            }
+                            handleCLickClose{{paper.id_paper}} = () => {
+                                var modal = document.querySelector(".m{{paper.id_paper}}");
+                                modal.style.display = "none";
+                            }
+                            if (id_user == check_mssv || super_user == "True") {
+                                const wrap_btn = document.querySelector(".a{{paper.id_paper}}")
+                                wrap_btn.innerHTML = `<div class="btn btn-primary custom-btn-edit custom-btn-icon">
+                                    <div class="text"> 
+                                        <a href="{% url 'editPaper' paper.id_paper %}"><i class="bi bi-pencil-square"></i></a>
+                                    </div>
+                                </div>
+                                <div class="btn btn-primary custom-btn-delete custom-btn-icon">
+                                    <div class="text" style = {background-color : "red"}> 
+                                        <a onClick = "handleClickDelete{{paper.id_paper}}()"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </div> 
+
+                                <div class="modal m{{paper.id_paper}}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Are you sure ??</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>If you delete you can't restore</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="handleCLickClose{{paper.id_paper}}()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary"><a style="color: white; text-decoration: none;" href="{% url 'deletePaper' paper.id_paper %}">Sure</a></button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>` 
+                            }
+                        </script>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'adminView/admin.html' %}
+{% load static %}
+
+{% block content %}
+<link href="{% static 'css/adminSite/adminSite.css' %}" rel="stylesheet">
+<link href="{% static 'css/form/main.css' %}" rel="stylesheet">
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+<div class="form">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3 group-form">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="background-color: #152259;">Submit</button>
+      </form>
+</div>
+<script>
+  CKEDITOR.replace('id_content'); // Replace 'id_content' with the actual ID of your content field
+</script>
+
+{% endblock %}
